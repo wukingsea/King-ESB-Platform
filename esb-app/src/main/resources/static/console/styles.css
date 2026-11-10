@@ -1,0 +1,128 @@
+:root {
+    --bg: #0f1420;
+    --bg-soft: #161d2c;
+    --card: #1b2436;
+    --border: #2a3548;
+    --text: #e6ecf5;
+    --muted: #8b98ad;
+    --primary: #3d7bfd;
+    --primary-hover: #558fff;
+    --danger: #e05260;
+    --ok: #3fb87a;
+    --warn: #e0a83f;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    font-family: "Segoe UI", system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 14px;
+}
+
+.hidden { display: none !important; }
+.muted { color: var(--muted); }
+.spacer { flex: 1; }
+
+.topbar {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 24px;
+    background: var(--bg-soft);
+    border-bottom: 1px solid var(--border);
+}
+
+.brand { font-size: 18px; font-weight: 700; letter-spacing: .5px; }
+.brand span { color: var(--primary); }
+
+.user-box { display: flex; align-items: center; gap: 12px; }
+.user-name { color: var(--muted); }
+
+main { padding: 24px; max-width: 1200px; margin: 0 auto; }
+
+.login-view { display: flex; justify-content: center; padding-top: 8vh; }
+.login-card { width: 360px; display: flex; flex-direction: column; gap: 14px; }
+.login-card h1 { margin: 0; font-size: 20px; }
+
+label { display: flex; flex-direction: column; gap: 6px; color: var(--muted); font-size: 13px; }
+
+input, select, textarea {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 6px;
+    padding: 9px 10px;
+    font-size: 14px;
+    font-family: inherit;
+}
+
+input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary); }
+
+.btn {
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--text);
+    border-radius: 6px;
+    padding: 8px 14px;
+    font-size: 13px;
+    cursor: pointer;
+}
+.btn:hover { border-color: var(--primary); }
+.btn.primary { background: var(--primary); border-color: var(--primary); font-weight: 600; }
+.btn.primary:hover { background: var(--primary-hover); }
+.btn.ghost { background: transparent; }
+.btn.danger { color: var(--danger); }
+.btn.small { padding: 5px 9px; font-size: 12px; }
+
+.card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+    margin-bottom: 18px;
+}
+
+.card-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.card-head h2 { margin: 0; font-size: 15px; }
+
+.tabs { display: flex; gap: 8px; margin-bottom: 18px; }
+.tab {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+}
+.tab.active { color: var(--text); border-color: var(--primary); background: var(--card); }
+
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; margin-bottom: 18px; }
+.stat { margin: 0; }
+.stat-label { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .5px; }
+.stat-value { font-size: 26px; font-weight: 700; margin-top: 6px; }
+
+.table { width: 100%; border-collapse: collapse; }
+.table th, .table td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--border); font-size: 13px; }
+.table th { color: var(--muted); font-weight: 600; text-transform: uppercase; font-size: 11px; letter-spacing: .5px; }
+.table tbody tr:hover { background: rgba(61, 123, 253, .06); }
+
+.badge { padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; }
+.badge.ok { background: rgba(63, 184, 122, .15); color: var(--ok); }
+.badge.err { background: rgba(224, 82, 96, .15); color: var(--danger); }
+.badge.warn { background: rgba(224, 168, 63, .15); color: var(--warn); }
+.badge.muted { background: rgba(139, 152, 173, .15); color: var(--muted); }
+
+.editor { width: 100%; min-height: 320px; font-family: "SFMono-Regular", Consolas, monospace; font-size: 13px; line-height: 1.5; resize: vertical; }
+.filters { display: flex; gap: 8px; }
+.filters .input { width: 160px; }
+
+.notice { margin-top: 10px; padding: 10px; border-radius: 6px; font-size: 13px; }
+.notice.ok { background: rgba(63, 184, 122, .12); color: var(--ok); }
+.notice.err { background: rgba(224, 82, 96, .12); color: var(--danger); }
+
+.error { color: var(--danger); font-size: 13px; }
+code { background: var(--bg); padding: 2px 6px; border-radius: 4px; font-size: 12px; }

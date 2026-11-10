@@ -1,0 +1,59 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: esb
+      POSTGRES_USER: esb
+      POSTGRES_PASSWORD: ${ESB_DB_PASSWORD:-esb}
+    ports:
+      - "5432:5432"
+    volumes:
+      - esb-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U esb -d esb"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--save", "", "--appendonly", "no"]
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: king-esb-platform:latest
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      ESB_DB_URL: jdbc:postgresql://postgres:5432/esb
+      ESB_DB_USER: esb
+      ESB_DB_PASSWORD: ${ESB_DB_PASSWORD:-esb}
+      ESB_REDIS_HOST: redis
+      ESB_REDIS_PORT: "6379"
+      ESB_JWT_SECRET: ${ESB_JWT_SECRET:?ESB_JWT_SECRET must be set (min 32 characters)}
+      ESB_ADMIN_USERNAME: ${ESB_ADMIN_USERNAME:-admin}
+      ESB_ADMIN_PASSWORD: ${ESB_ADMIN_PASSWORD:?ESB_ADMIN_PASSWORD must be set}
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8080/actuator/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 40s
+
+volumes:
+  esb-pgdata:

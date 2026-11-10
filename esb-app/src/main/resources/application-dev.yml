@@ -1,0 +1,28 @@
+# Dev profile: in-memory H2, in-memory rate limiter, insecure defaults for local use only.
+spring:
+  datasource:
+    url: jdbc:h2:mem:esb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=PostgreSQL
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: ""
+  jpa:
+    hibernate:
+      ddl-auto: none
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
+
+management:
+  endpoint:
+    health:
+      show-details: always
+
+esb:
+  security:
+    jwt-secret: ${ESB_JWT_SECRET:dev-only-insecure-jwt-secret-change-me-0123456789}
+    admin-username: ${ESB_ADMIN_USERNAME:admin}
+    admin-password: ${ESB_ADMIN_PASSWORD:admin1234}
+
+logging:
+  level:
+    com.king.esb: DEBUG

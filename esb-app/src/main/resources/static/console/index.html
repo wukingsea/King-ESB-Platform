@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>King ESB Console</title>
+    <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+<header class="topbar">
+    <div class="brand">King<span>ESB</span></div>
+    <div class="spacer"></div>
+    <div id="user-box" class="user-box hidden">
+        <span id="user-name" class="user-name"></span>
+        <button id="logout-btn" class="btn ghost">Sign out</button>
+    </div>
+</header>
+
+<main>
+    <section id="login-view" class="login-view">
+        <form id="login-form" class="card login-card">
+            <h1>Console sign in</h1>
+            <p class="muted">Default dev credentials: <code>admin / admin1234</code></p>
+            <label>Username<input id="login-username" type="text" autocomplete="username" value="admin"/></label>
+            <label>Password<input id="login-password" type="password" autocomplete="current-password" value="admin1234"/></label>
+            <button class="btn primary" type="submit">Sign in</button>
+            <div id="login-error" class="error hidden"></div>
+        </form>
+    </section>
+
+    <section id="main-view" class="main-view hidden">
+        <nav class="tabs">
+            <button class="tab active" data-tab="dashboard">Dashboard</button>
+            <button class="tab" data-tab="routes">Routes</button>
+            <button class="tab" data-tab="logs">Call logs</button>
+        </nav>
+
+        <div id="tab-dashboard" class="tab-panel">
+            <div class="cards">
+                <div class="card stat"><div class="stat-label">Total calls</div><div id="stat-total" class="stat-value">–</div></div>
+                <div class="card stat"><div class="stat-label">Errors</div><div id="stat-errors" class="stat-value">–</div></div>
+                <div class="card stat"><div class="stat-label">Error rate</div><div id="stat-rate" class="stat-value">–</div></div>
+                <div class="card stat"><div class="stat-label">Avg latency</div><div id="stat-latency" class="stat-value">–</div></div>
+                <div class="card stat"><div class="stat-label">Published routes</div><div id="stat-routes" class="stat-value">–</div></div>
+            </div>
+            <div class="card">
+                <div class="card-head"><h2>Routes</h2><button id="refresh-dashboard" class="btn ghost">Refresh</button></div>
+                <table class="table"><thead>
+                <tr><th>Name</th><th>Method</th><th>Path</th><th>Priority</th><th>Enabled</th><th>Version</th></tr>
+                </thead><tbody id="dashboard-routes"></tbody></table>
+            </div>
+        </div>
+
+        <div id="tab-routes" class="tab-panel hidden">
+            <div class="card">
+                <div class="card-head">
+                    <h2>Routes</h2>
+                    <div>
+                        <button id="new-route" class="btn">New route</button>
+                        <button id="refresh-routes" class="btn ghost">Refresh</button>
+                    </div>
+                </div>
+                <table class="table"><thead>
+                <tr><th>Name</th><th>Method</th><th>Path</th><th>Enabled</th><th>Actions</th></tr>
+                </thead><tbody id="routes-body"></tbody></table>
+            </div>
+
+            <div class="card">
+                <div class="card-head"><h2 id="editor-title">Route definition (JSON)</h2>
+                    <button id="save-route" class="btn primary">Save</button></div>
+                <textarea id="route-editor" class="editor" spellcheck="false" placeholder='{
+  "name": "my-route",
+  "path": "/api/**",
+  "method": "*",
+  "priority": 100,
+  "enabled": true,
+  "pipeline": [
+    { "id": "log", "type": "LOG", "config": { "message": "in ${method} ${path}" } }
+  ]
+}'></textarea>
+                <div id="route-message" class="notice hidden"></div>
+            </div>
+        </div>
+
+        <div id="tab-logs" class="tab-panel hidden">
+            <div class="card">
+                <div class="card-head">
+                    <h2>Call logs</h2>
+                    <div class="filters">
+                        <input id="filter-route" class="input" placeholder="routeId"/>
+                        <select id="filter-status" class="input">
+                            <option value="">any status</option>
+                            <option value="OK">OK</option>
+                            <option value="ERROR">ERROR</option>
+                            <option value="FILTERED">FILTERED</option>
+                            <option value="RATE_LIMITED">RATE_LIMITED</option>
+                        </select>
+                        <button id="refresh-logs" class="btn ghost">Refresh</button>
+                    </div>
+                </div>
+                <table class="table"><thead>
+                <tr><th>Time</th><th>Trace</th><th>Route</th><th>Method</th><th>Path</th><th>Status</th><th>HTTP</th><th>ms</th></tr>
+                </thead><tbody id="logs-body"></tbody></table>
+            </div>
+        </div>
+    </section>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>
